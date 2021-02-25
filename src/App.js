@@ -1,23 +1,25 @@
 import logo from './logo.svg';
+import {Switch, BrowserRouter as Router, Route} from "react-router-dom";
+import {useState} from "react";
 import './App.css';
+import Order from "./pages/Order";
+import Sales from "./pages/Sales";
 
 function App() {
+  const storedSales = localStorage.getItem("sales");
+  let initialSales = [];
+  if(storedSales){
+    initialSales = JSON.parse(storedSales);
+  }
+  const [sales, setSales] = useState(initialSales);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route path="/order" component={()=> <Order setSales={setSales}/>}></Route>
+          <Route path="/sales" component={() => <Sales sales={sales}/>}></Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
